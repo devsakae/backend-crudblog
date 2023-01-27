@@ -1,10 +1,9 @@
 const UserSchema = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
-      allowNull: false,
-      autoIncxcrement: true,
-      primaryKey: true,
       type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     displayName: {
       type: DataTypes.STRING,
