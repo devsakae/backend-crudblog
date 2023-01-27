@@ -14,7 +14,13 @@ const verifyUserEmail = async (email) => {
   return response;
 };
 
+const getAllUsers = async () => {
+  const allUsers = await User.findAll({ attributes: { exclude: ['password'] } });
+  return allUsers;
+};
+
 module.exports = {
+  getAllUsers,
   createNewUser,
   verifyUserEmail,
 };

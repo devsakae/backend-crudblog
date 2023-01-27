@@ -16,6 +16,17 @@ const createNewUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (_req, res) => {
+  try {
+    const allUsers = await adminService.getAllUsers();
+    // if (allUsers.length < 1) return res.status(500);
+    return res.status(200).json(allUsers);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createNewUser,
+  getAllUsers,
 };

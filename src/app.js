@@ -4,9 +4,7 @@ const adminController = require('./controllers/admin.controller');
 const validateDisplayName = require('./middlewares/displayName');
 const validatePassword = require('./middlewares/password');
 const validateUser = require('./middlewares/user');
-// Não é necessário no requisito 4, mas a partir do 5...
-// const validateToken = require('./auth/validaJWT');
-// ...
+const { validateToken } = require('./middlewares/validateToken');
 
 const app = express();
 
@@ -19,6 +17,10 @@ app.post('/user',
   validatePassword,
   validateUser,
   adminController.createNewUser);
+
+app.get('/user',
+  validateToken,
+  adminController.getAllUsers);
 
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
