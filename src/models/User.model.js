@@ -24,9 +24,9 @@ const UserSchema = (sequelize, DataTypes) => {
     timestamps: false
   });
   User.associate = (models) => {
-    Plan.belongsTo(models.User, {
+    User.belongsTo(models.User, {
       as: 'user',
-      foreignKey: 'id_user',
+      foreignKey: 'id',
     })
   };
   return User;
