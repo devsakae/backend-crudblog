@@ -26,7 +26,19 @@ const getAllUsers = async (_req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const userRequested = await adminService.getUserById(req.params);
+    if (!userRequested) return res.status(404).json({ message: 'User does not exist' });
+    const { id, displayName, email, image } = userRequested;
+    return res.status(200).json({ id: +id, displayName, email, image });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createNewUser,
   getAllUsers,
+  getUserById,
 };

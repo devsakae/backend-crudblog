@@ -17,11 +17,6 @@ const validateToken = async (req, res, next) => {
   }
 };
 
-const generateToken = () => {
-
-};
-
 module.exports = {
   validateToken,
-  generateToken,
-}
+};
