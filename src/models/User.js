@@ -23,9 +23,13 @@ const UserSchema = (sequelize, DataTypes) => {
     timestamps: false
   });
   User.associate = (models) => {
-    User.belongsTo(models.User, {
-      as: 'user',
-      foreignKey: 'id',
+    // User.belongsTo(models.User, {
+    //   as: 'user',
+    //   foreignKey: 'id',
+    // })
+    User.hasMany(models.BlogPost, {
+      foreignKey: 'userId',
+      as: 'blogPosts'
     })
   };
   return User;
