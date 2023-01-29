@@ -33,6 +33,10 @@ app.post('/categories',
   validateName,
   categoryController.createNewCategory);
 
+app.get('/categories',
+  validateToken,
+  categoryController.getAllCategories);
+
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;
