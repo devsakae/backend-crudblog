@@ -46,6 +46,10 @@ app.post('/post',
   validatePost,
   postController.createNewPost);
 
+app.get('/post',
+  validateToken,
+  postController.getAllPosts);
+
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;

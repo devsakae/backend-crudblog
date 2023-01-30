@@ -1,4 +1,4 @@
-const { BlogPost, Category, PostCategory } = require('../models');
+const { BlogPost, Category, PostCategory, User } = require('../models');
 
 // const Sequelize = require('sequelize');
 // const config = require('../config/config');
@@ -21,6 +21,28 @@ const createNewPost = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
+const getAllPosts = async () => {
+  try {
+    const allPosts = await BlogPost.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: Category,
+          as: 'categories',
+        },
+      ],
+    });
+    return { code: 200, message: allPosts };
+  } catch (err) {
+    return { code: 500, message: err.message }
+  };
+};
+
 module.exports = {
   createNewPost,
+  getAllPosts,
 };
