@@ -13,6 +13,12 @@ const getPosts = async (req, res) => {
   res.status(code).json(message);
 };
 
+const editPost = async (req, res) => {
+  const { params, user, body } = req;
+  const { code, message } = await postService.editPost(params, user, body);
+  res.status(code).json(message);
+};
+
 // const getPostById = async (req, res) => {
 //   const { code, message } = await postService.getPostById(req.params);
 //   res.status(code).json(message);
@@ -21,4 +27,5 @@ const getPosts = async (req, res) => {
 module.exports = {
   createNewPost,
   getPosts,
+  editPost,
 };

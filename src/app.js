@@ -11,6 +11,7 @@ const validatePassword = require('./middlewares/password');
 const validateUser = require('./middlewares/user');
 const validateName = require('./middlewares/name');
 const validatePost = require('./middlewares/postControl');
+const postControl = require('./middlewares/postControl');
 
 const app = express();
 
@@ -53,6 +54,11 @@ app.get('/post',
 app.get('/post/:id',
   validateToken,
   postController.getPosts);
+
+app.put('/post/:id',
+validateToken,
+postControl,
+postController.editPost);
 
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`

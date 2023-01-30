@@ -14,7 +14,7 @@ const createNewPost = async ({ title, content, categoryIds, userId }) => {
     }
     const response = await BlogPost.create({ title, content, userId });
     const bulking = categoryIds.map((cat) => ({ postId: response.id, categoryId: cat }));
-    PostCategory.bulkCreate(bulking);
+    await PostCategory.bulkCreate(bulking);
     return { code: 201, message: response };
   } catch (err) {
     return { code: 500, message: err.message }; 
@@ -41,6 +41,22 @@ const getPosts = async (req) => {
   }
 };
 
+const editPost = async ({ id }, user, { title, content }) => {
+  const response = await BlogPost.update(
+    { title, content },
+    {
+      where: {
+        id,
+        userId: +user.id,
+      },
+    },
+);
+  const { message } = await getPosts({ params: { id } });
+  if (!response) { return { code: 401, message: 'Unauthorized user' }; }
+  return { code: 200, message };
+};
+
+// Código antigo, refatorado
 // const getPostById = async ({ id }) => {
 //   try {
 //     const response = await BlogPost.findOne({
@@ -60,4 +76,5 @@ const getPosts = async (req) => {
 module.exports = {
   createNewPost,
   getPosts,
+  editPost,
 };

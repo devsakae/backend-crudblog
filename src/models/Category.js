@@ -13,12 +13,12 @@ const CategorySchema = (sequelize, DataTypes) => {
     underscored: true,
     timestamps: false
   });
-  Category.associate = (models) => {
-    Category.belongsTo(models.PostCategory, {
-      as: 'category_id',
-      foreignKey: 'id',
-    })
-  };
+  // Category.associate = (models) => {
+  //   Category.belongsTo(models.PostCategory, {
+  //     as: 'category_id',
+  //     foreignKey: 'id',
+  //   })
+  // };
   return Category;
 };
 
