@@ -48,7 +48,11 @@ app.post('/post',
 
 app.get('/post',
   validateToken,
-  postController.getAllPosts);
+  postController.getPosts);
+
+app.get('/post/:id',
+  validateToken,
+  postController.getPostById);
 
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
