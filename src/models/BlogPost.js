@@ -13,17 +13,13 @@ const BlogPostSchema = (sequelize, DataTypes) => {
     },
     userId: {
       type: DataTypes.INTEGER,
-    },
-    published: {
-      type: DataTypes.DATE,
-    },
-    updated: {
-      type: DataTypes.DATE,
     }
   }, {
-    tableName: 'blogPost', 
+    tableName: 'blog_posts', 
     underscored: true,
-    timestamps: true
+    timestamps: true,
+    createdAt: 'published',
+    updatedAt: 'updated',
   });
   BlogPost.associate = (models) => {
     BlogPost.belongsTo(models.User, {
