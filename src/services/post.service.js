@@ -38,8 +38,8 @@ const getAllPosts = async () => {
     });
     return { code: 200, message: allPosts };
   } catch (err) {
-    return { code: 500, message: err.message }
-  };
+    return { code: 500, message: err.message };
+  }
 };
 
 module.exports = {

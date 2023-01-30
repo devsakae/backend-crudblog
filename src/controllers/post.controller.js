@@ -1,5 +1,4 @@
 const postService = require('../services/post.service');
-const mock = { code: 200, message: { response: "Sou um mock" } };
 
 const createNewPost = async (req, res) => {
   const { body: { title, content, categoryIds }, user: { id } } = req;
