@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, Category, PostCategory, User } = require('../models');
 
 // const Sequelize = require('sequelize');
@@ -17,7 +18,7 @@ const createNewPost = async ({ title, content, categoryIds, userId }) => {
     await PostCategory.bulkCreate(bulking);
     return { code: 201, message: response };
   } catch (err) {
-    return { code: 500, message: err.message }; 
+    return { code: 500, message: err.message };
   }
 };
 
@@ -47,12 +48,15 @@ const editPost = async ({ id }, user, { title, content }) => {
     {
       where: {
         id,
-        userId: +user.id,
+        userId: {
+          [Op.eq]: user.id,
+        },
       },
     },
-);
+  );
+  console.log('My response:', response);
+  if (response[0] === 0) { return { code: 401, message: { message: 'Unauthorized user' } }; }
   const { message } = await getPosts({ params: { id } });
-  if (!response) { return { code: 401, message: 'Unauthorized user' }; }
   return { code: 200, message };
 };
 

@@ -32,11 +32,6 @@ const BlogPostSchema = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'user',
     })
-    // ,
-    // BlogPost.hasMany(models.Category, {
-    //   foreignKey: 'id',
-    //   as: 'categories',
-    // })
   };
   return BlogPost;
 };
