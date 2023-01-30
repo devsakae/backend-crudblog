@@ -21,7 +21,7 @@ const createNewPost = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
-const getPosts = async () => {
+const getPosts = async (req) => {
   try {
     const allPosts = await BlogPost.findAll({
       include: [
@@ -29,39 +29,35 @@ const getPosts = async () => {
         { model: Category, as: 'categories' },
       ],
     });
-    // Não funcionou, mas a lógica parecia impecável...
-    // if (req.params.id) {
-    //   console.log('*** ENTREI NO IF ***');
-    //   const { id } = req.params;
-    //   console.log('*** DESCONSTRUÍ O ID ***', id);
-    //   const specificPost = await allPosts.find((post) => post.id === id)
-    //   console.log('*** FIZ O FIND ***', specificPost);
-    //   return { code: 200, message: specificPost };
-    // }
+    if (req.params.id) {
+      const { id } = req.params;
+      const specificPost = await allPosts.find((post) => +post.id === +id);
+      if (!specificPost) { return { code: 404, message: { message: 'Post does not exist' } }; }
+      return { code: 200, message: specificPost };
+    }
     return { code: 200, message: allPosts };
   } catch (err) {
     return { code: 500, message: err.message };
   }
 };
 
-const getPostById = async ({ id }) => {
-  try {
-    const response = await BlogPost.findOne({
-        where: { id },
-        include: [
-          { model: User, as: 'user', attributes: { exclude: ['password'] } },
-          { model: Category, as: 'categories' },
-        ],
-      });
-    if (!response) { return { code: 404, message: { message: 'Post does not exist' } }; }
-    return { code: 200, message: response };
-  } catch (err) {
-    return { code: 500, message: err.message };
-  }
-};
+// const getPostById = async ({ id }) => {
+//   try {
+//     const response = await BlogPost.findOne({
+//         where: { id },
+//         include: [
+//           { model: User, as: 'user', attributes: { exclude: ['password'] } },
+//           { model: Category, as: 'categories' },
+//         ],
+//       });
+//     if (!response) { return { code: 404, message: { message: 'Post does not exist' } }; }
+//     return { code: 200, message: response };
+//   } catch (err) {
+//     return { code: 500, message: err.message };
+//   }
+// };
 
 module.exports = {
   createNewPost,
   getPosts,
-  getPostById,
 };
