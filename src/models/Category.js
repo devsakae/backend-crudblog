@@ -14,8 +14,8 @@ const CategorySchema = (sequelize, DataTypes) => {
     timestamps: false
   });
   Category.associate = (models) => {
-    Category.belongsTo(models.Category, {
-      as: 'category',
+    Category.belongsTo(models.PostCategory, {
+      as: 'category_id',
       foreignKey: 'id',
     })
   };
