@@ -4,7 +4,7 @@ const validateName = require('../middlewares/name');
 
 const router = express.Router();
 
-router.post('/categories', validateName, categoryController.createNewCategory);
-router.get('/categories', categoryController.getAllCategories);
+router.get('/', categoryController.getAllCategories);
+router.post('/', validateName, categoryController.createNewCategory);
 
 module.exports = router;

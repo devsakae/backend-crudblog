@@ -70,7 +70,7 @@ const searchPost = async ({ q }) => {
         [Op.or]: {
           title: { [Op.substring]: q },
           content: { [Op.substring]: q },
-        }
+        },
       },
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
