@@ -45,40 +45,26 @@ const getPosts = async (req) => {
 const editPost = async ({ id }, user, { title, content }) => {
   const response = await BlogPost.update(
     { title, content },
-    {
-      where: {
-        id,
-        userId: {
-          [Op.eq]: user.id,
-        },
-      },
-    },
-  );
-  console.log('My response:', response);
+    { where: { id, userId: { [Op.eq]: user.id } } },
+);
   if (response[0] === 0) { return { code: 401, message: { message: 'Unauthorized user' } }; }
   const { message } = await getPosts({ params: { id } });
   return { code: 200, message };
 };
 
-// Código antigo, refatorado
-// const getPostById = async ({ id }) => {
-//   try {
-//     const response = await BlogPost.findOne({
-//         where: { id },
-//         include: [
-//           { model: User, as: 'user', attributes: { exclude: ['password'] } },
-//           { model: Category, as: 'categories' },
-//         ],
-//       });
-//     if (!response) { return { code: 404, message: { message: 'Post does not exist' } }; }
-//     return { code: 200, message: response };
-//   } catch (err) {
-//     return { code: 500, message: err.message };
-//   }
-// };
+const deletePost = async ({ id }, user) => {
+  try {
+    const response = await BlogPost.destroy({ where: { id, userId: { [Op.eq]: user.id } } });
+    if (response[0] === 0) { return { code: 401, message: { message: 'Unauthorized user' } }; }
+    return { code: 204 };
+  } catch (err) {
+    return { code: 500, message: err.message };
+  }
+};
 
 module.exports = {
   createNewPost,
   getPosts,
   editPost,
+  deletePost,
 };
