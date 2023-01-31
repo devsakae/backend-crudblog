@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { BlogPost, Category, PostCategory, User } = require('../models');
 
+// Colocar para atomizar e criar segurança
 // const Sequelize = require('sequelize');
 // const config = require('../config/config');
 // const env = process.env.NODE_ENV || 'development';
@@ -46,7 +47,7 @@ const editPost = async ({ id }, user, { title, content }) => {
   const response = await BlogPost.update(
     { title, content },
     { where: { id, userId: { [Op.eq]: user.id } } },
-);
+  );
   if (response[0] === 0) { return { code: 401, message: { message: 'Unauthorized user' } }; }
   const { message } = await getPosts({ params: { id } });
   return { code: 200, message };
@@ -62,9 +63,30 @@ const deletePost = async ({ id }, user) => {
   }
 };
 
+const searchPost = async ({ q }) => {
+  try {
+    const response = await BlogPost.findAll({
+      where: {
+        [Op.or]: {
+          title: { [Op.substring]: q },
+          content: { [Op.substring]: q },
+        }
+      },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories' },
+      ],
+    });
+    return { code: 200, message: response };
+  } catch (err) {
+    return { code: 500, message: err.message };
+  }
+};
+
 module.exports = {
   createNewPost,
   getPosts,
   editPost,
   deletePost,
+  searchPost,
 };
