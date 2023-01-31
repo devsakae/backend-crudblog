@@ -1,11 +1,11 @@
 const { Op } = require('sequelize');
-const { BlogPost, Category, PostCategory, User } = require('../models');
+// Configuração básica do managed transactions
+const Sequelize = require('sequelize');
+const config = require('../config/config');
 
-// Colocar para atomizar e criar segurança
-// const Sequelize = require('sequelize');
-// const config = require('../config/config');
-// const env = process.env.NODE_ENV || 'development';
-// const sequelize = new Sequelize(config[env]);
+const env = process.env.NODE_ENV || 'development';
+const sequelize = new Sequelize(config[env]);
+const { BlogPost, Category, PostCategory, User } = require('../models');
 
 const createNewPost = async ({ title, content, categoryIds, userId }) => {
   try {
@@ -14,9 +14,19 @@ const createNewPost = async ({ title, content, categoryIds, userId }) => {
     if (count > categoryIds.length || check) {
       return { code: 400, message: { message: 'one or more "categoryIds" not found' } };
     }
-    const response = await BlogPost.create({ title, content, userId });
-    const bulking = categoryIds.map((cat) => ({ postId: response.id, categoryId: cat }));
-    await PostCategory.bulkCreate(bulking);
+
+    // Transactions (managed)
+    const response = await sequelize.transaction(async (t) => {
+      const newPost = await BlogPost.create({ title, content, userId }, { transaction: t });
+      const bulking = categoryIds.map((cat) => ({ postId: newPost.id, categoryId: cat }));
+      await PostCategory.bulkCreate(bulking, { transaction: t });
+      return newPost;
+    });
+    
+    // Código antigo, refatorado para usar transactions (acima)
+    // const response = await BlogPost.create({ title, content, userId });
+    // const bulking = categoryIds.map((cat) => ({ postId: response.id, categoryId: cat }));
+    // await PostCategory.bulkCreate(bulking);
     return { code: 201, message: response };
   } catch (err) {
     return { code: 500, message: err.message };
@@ -66,12 +76,10 @@ const deletePost = async ({ id }, user) => {
 const searchPost = async ({ q }) => {
   try {
     const response = await BlogPost.findAll({
-      where: {
-        [Op.or]: {
+      where: { [Op.or]: {
           title: { [Op.substring]: q },
           content: { [Op.substring]: q },
-        },
-      },
+        } },
       include: [
         { model: User, as: 'user', attributes: { exclude: ['password'] } },
         { model: Category, as: 'categories' },
