@@ -31,6 +31,10 @@ app.get('/user/:id',
   validateToken,
   adminController.getUserById);
 
+app.delete('/user/me',
+  validateToken,
+  loginController.deleteMe);
+
 app.use('/categories', validateToken, categoryRoute);
 app.use('/post', validateToken, postRoute);
 

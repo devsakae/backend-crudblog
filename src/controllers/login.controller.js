@@ -27,6 +27,12 @@ const login = async (req, res) => {
   }
 };
 
+const deleteMe = async (req, res) => {
+  const { code, message } = await UserService.deleteMe(req.user);
+  return res.status(code).json(message);
+};
+
 module.exports = {
   login,
+  deleteMe,
 };

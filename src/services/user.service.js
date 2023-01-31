@@ -15,8 +15,18 @@ const getById = async (id) => {
   return user;
 };
 
+const deleteMe = async ({ id }) => {
+  try {
+    const response = await User.destroy({ where: { id } });
+    return { code: 204, message: response };
+  } catch (err) {
+    return { code: 500, message: err.message };
+  }
+};
+
 module.exports = {
   getByCredentials,
   verifyUserEmail,
   getById,
+  deleteMe,
 };
