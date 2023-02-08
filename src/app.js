@@ -15,7 +15,6 @@ const app = express();
 
 app.use(express.json());
 
-// ...
 app.post('/login', loginController.login);
 app.post('/user',
   validateDisplayName,
@@ -38,6 +37,4 @@ app.delete('/user/me',
 app.use('/categories', validateToken, categoryRoute);
 app.use('/post', validateToken, postRoute);
 
-// É importante exportar a constante `app`,
-// para que possa ser utilizada pelo arquivo `src/server.js`
 module.exports = app;

@@ -12,7 +12,7 @@ const options = {
   host: process.env.MYSQL_HOST || 'localhost',
   port: process.env.MYSQL_PORT || '3306',
   database: 
-    `${process.env.MYSQL_DB_NAME || 'blogs-api'}${suffix[environment] || suffix.test}`,
+    `${process.env.MYSQL_DB_NAME || 'crudblog'}${suffix[environment] || suffix.test}`,
   username: process.env.MYSQL_USER || 'root',
   password: process.env.MYSQL_PASSWORD || 'password',
   dialect: 'mysql',
