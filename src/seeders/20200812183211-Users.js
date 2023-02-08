@@ -6,14 +6,14 @@ module.exports = {
         display_name: 'Bill Gates',
         email: 'gates@microsoft.com',
         password: '123456',
-        image: 'https://pt.wikipedia.org/wiki/Bill_Gates#/media/Ficheiro:Bill_Gates_2018.jpg',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Bill_Gates_2018.jpg',
       },
       {
         id: 2,
         display_name: 'Steve Jobs',
         email: 'jobs@apple.com',
         password: '654321',
-        image: 'https://pt.wikipedia.org/wiki/Steve_Jobs#/media/Ficheiro:Steve_Jobs_Headshot_2010-CROP2.jpg',
+        image: 'https://blogdoiphone.com/wp-content/uploads/2017/11/Steve-Jobs.jpg',
       },
       ], { timestamps: false });
   },
