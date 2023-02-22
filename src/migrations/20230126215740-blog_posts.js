@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.BLOB,
         allowNull: false,
       },
       user_id: {
